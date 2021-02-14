@@ -1,21 +1,19 @@
 # ExBanking
 
-**TODO: Add description**
+OTP application in Elixir language. This small project aims to solve [this](https://coingaming.github.io/elixir-test/) challenge from [coingaming](https://coingaming.io/).
 
-## Installation
+## Installation and Running
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ex_banking` to your list of dependencies in `mix.exs`:
+- Install dependencies with `mix deps.get`
+- Start the project with in the interactive shell with `iex -S mix`
 
-```elixir
-def deps do
-  [
-    {:ex_banking, "~> 0.1.0"}
-  ]
-end
+
+## API Documentation
+
+To generate the api documentation, follow the [ex_docs](https://github.com/elixir-lang/ex_doc) instructions to install ExDoc as an escript. Then run the following command:
+
+```shell
+ex_doc "ExBanking" "0.1.0" "_build/dev/lib/ex_banking/ebin"   
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ex_banking](https://hexdocs.pm/ex_banking).
-
+## Final thoughts
