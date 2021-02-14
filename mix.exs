@@ -12,8 +12,7 @@ defmodule ExBanking.MixProject do
       # Docs
       name: "Ex Banking",
       source_url: "https://github.com/phcurado/ex_banking",
-      docs: [main: "ExBanking",
-             extras: ["README.md"]]
+      docs: [main: "ExBanking", extras: ["README.md"]]
     ]
   end
 
@@ -26,7 +25,7 @@ defmodule ExBanking.MixProject do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.23", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.23", only: :dev, runtime: false}
     ]
   end
 end

@@ -2,7 +2,7 @@ defmodule ExBankingTest do
   use ExUnit.Case
   doctest ExBanking
 
-  test "greets the world" do
-    assert ExBanking.hello() == :world
+  test "create user" do
+    assert ExBanking.create_user("Paulo") == :ok
   end
 end
