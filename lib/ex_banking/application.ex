@@ -6,7 +6,8 @@ defmodule ExBanking.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {ExBanking.User.Supervisor, []},
+      {DynamicSupervisor, strategy: :one_for_one, name: ExBanking.User.DynamicSupervisor},
+      {ExBanking.User.Server, []},
       {Registry, keys: :unique, name: Registry.User}
     ]
 

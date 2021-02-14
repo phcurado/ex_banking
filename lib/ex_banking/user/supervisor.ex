@@ -3,15 +3,13 @@ defmodule ExBanking.User.Supervisor do
 
   use Supervisor
 
-  def start_link(args) do
-    Supervisor.start_link(__MODULE__, args, name: __MODULE__)
+  def start_link(%{user: user} = args) do
+    Supervisor.start_link(__MODULE__, args, name: {:via, Registry, {Registry.User, user}})
   end
 
   @impl true
   def init(_args) do
     children = [
-      {DynamicSupervisor, strategy: :one_for_one, name: ExBanking.User.DynamicSupervisor},
-      {ExBanking.User.Server, []}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

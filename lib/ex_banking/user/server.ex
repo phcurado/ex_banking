@@ -30,7 +30,7 @@ defmodule ExBanking.User.Server do
     end
   end
 
-  defp start_user_supervisor(_user) do
-    DynamicSupervisor.start_child(ExBanking.User.DynamicSupervisor, {Agent, fn -> %{} end})
+  defp start_user_supervisor(user) do
+    DynamicSupervisor.start_child(ExBanking.User.DynamicSupervisor, {ExBanking.User.Supervisor, %{user: user}})
   end
 end
