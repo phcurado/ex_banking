@@ -4,6 +4,6 @@ defmodule ExBanking.User do
   """
 
   def create(user) do
-    ExBanking.User.Server.create_user(user)
+    DynamicSupervisor.start_child(ExBanking.User.DynamicSupervisor, {ExBanking.User.Supervisor, %{user: user}})
   end
 end
