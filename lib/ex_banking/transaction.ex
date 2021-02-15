@@ -3,7 +3,7 @@ defmodule ExBanking.Transaction do
   Transaction Domain.
   """
 
-  def deposit(user, amount, currency) do
-    DynamicSupervisor.start_child({:via, Registry, {Registry.User, user}}, {ExBanking.User.Producer, user})
+  def deposit(_user, amount, _currency) do
+    {:ok, amount}
   end
 end

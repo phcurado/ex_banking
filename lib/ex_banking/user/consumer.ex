@@ -18,9 +18,11 @@ defmodule ExBanking.User.Consumer do
 
   def handle_events(events, _from, state) do
     Process.sleep(1000)
+
     for event <- events do
       IO.inspect({self(), event})
     end
+
     {:noreply, [], state}
   end
 end

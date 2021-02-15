@@ -53,12 +53,12 @@ defmodule ExBanking do
   ## Example
       iex> ExBanking.get_balance("John", "R$")
       {:ok, 25}
+      iex> ExBanking.get_balance("nonexistent user", "R$")
+      {:error, :user_does_not_exist}
   """
   @spec get_balance(user :: String.t(), currency :: String.t()) ::
           {:ok, balance :: number} | banking_error
-  def get_balance(_user, _currency) do
-    {:ok, 0}
-  end
+  defdelegate get_balance(user, currency), to: ExBanking.User
 
   @doc """
   Transfer money between users.

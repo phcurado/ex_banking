@@ -18,7 +18,7 @@ defmodule ExBanking.User.Producer do
   ## Callbacks
 
   def init(:ok) do
-    {:producer, {:queue.new, 0}}
+    {:producer, {:queue.new(), 0}}
   end
 
   def handle_call({:notify, event}, from, {queue, pending_demand}) do
@@ -39,6 +39,7 @@ defmodule ExBanking.User.Producer do
       {{:value, {from, event}}, queue} ->
         GenStage.reply(from, :ok)
         dispatch_events(queue, demand - 1, [event | events])
+
       {:empty, queue} ->
         {:noreply, Enum.reverse(events), {queue, demand}}
     end
