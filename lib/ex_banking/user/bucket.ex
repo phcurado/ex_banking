@@ -12,34 +12,41 @@ defmodule ExBanking.User.Bucket do
     try do
       get_amount!(user, currency)
     catch
-      :exit, _ -> nil
+      :exit, _ -> {:error, :not_found}
     end
   end
 
   def get_amount!(user, currency) do
     user
     |> registry_name()
-    |> Agent.get(&(&1))
+    |> Agent.get(& &1)
     |> Map.get(currency)
+    |> case do
+      nil -> 0
+      amount -> amount
+    end
   end
 
-  def add_amount(user, currency, amount) do
+  def add_amount(user, amount, currency) do
     try do
-      add_amount!(user, currency, amount)
+      add_amount!(user, amount, currency)
     catch
       :exit, _ -> nil
     end
   end
 
-  def add_amount!(user, currency, amount) do
+  def add_amount!(user, amount, currency) do
     user
     |> registry_name()
-    |> Agent.update(fn bucket ->
-      case Map.get(bucket, currency) do
+    |> Agent.get_and_update(fn state ->
+      case Map.get(state, currency) do
         nil ->
-          Map.put(bucket, currency, amount)
+          new_val = Map.put(state, currency, amount)
+          {Map.get(new_val, currency), new_val}
+
         user_amount ->
-          Map.put(bucket, currency, user_amount + amount)
+          new_val = Map.put(state, currency, user_amount + amount)
+          {Map.get(new_val, currency), new_val}
       end
     end)
   end

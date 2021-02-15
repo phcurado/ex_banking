@@ -1,6 +1,8 @@
 defmodule ExBanking.User.Consumer do
   use GenStage
 
+  alias ExBanking.User.Bucket
+
   @doc "Starts the user consumer."
   def start_link({consumer_name, subscription}) do
     GenStage.start_link(__MODULE__, {:ok, subscription}, name: consumer_name)
@@ -17,12 +19,15 @@ defmodule ExBanking.User.Consumer do
   end
 
   def handle_events(events, _from, state) do
-    Process.sleep(1000)
-
-    for event <- events do
-      IO.inspect({self(), event})
+    for {from, {operation, params}} <- events do
+      result = handle_event(operation, params)
+      GenStage.reply(from, result)
     end
 
     {:noreply, [], state}
+  end
+
+  def handle_event(:deposit, %{user: user, amount: amount, currency: currency}) do
+    Bucket.add_amount(user, amount, currency)
   end
 end

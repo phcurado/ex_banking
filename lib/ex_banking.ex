@@ -45,7 +45,7 @@ defmodule ExBanking do
   """
   @spec deposit(user :: String.t(), amount :: number, currency :: String.t()) ::
           {:ok, new_balance :: number} | banking_error
-  defdelegate deposit(user, amount, currency), to: ExBanking.Transaction
+  defdelegate deposit(user, amount, currency), to: ExBanking.User
 
   @doc """
   Get the balence for the given `user`.

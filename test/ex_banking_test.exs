@@ -19,6 +19,7 @@ defmodule ExBankingTest do
 
   describe "deposit/3" do
     test "Deposit money to a user" do
+      ExBanking.create_user("Carlos")
       assert ExBanking.deposit("Carlos", 20.00, "R$") == {:ok, 20.00}
       assert ExBanking.deposit("Carlos", 33.10, "R$") == {:ok, 53.10}
       assert ExBanking.deposit("Carlos", 10.50, "€") == {:ok, 10.50}
@@ -37,8 +38,9 @@ defmodule ExBankingTest do
 
   describe "get_balance/2" do
     test "get balance from user" do
-      ExBanking.create_user("Carlos")
-      assert ExBanking.get_balance("Carlos", "R$") == {:ok, 0.00}
+      ExBanking.create_user("Jonas")
+      assert ExBanking.get_balance("Jonas", "R$") == {:ok, 0.00}
+      assert ExBanking.get_balance("Jonas", "EUR") == {:ok, 0.00}
     end
 
     test "returns an error when the user don't exist" do
