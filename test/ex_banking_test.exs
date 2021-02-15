@@ -33,6 +33,31 @@ defmodule ExBankingTest do
       assert ExBanking.deposit("Paulo", 20.00, :coin) == {:error, :wrong_arguments}
       assert ExBanking.deposit("Paulo", "30.00", "R$") == {:error, :wrong_arguments}
       assert ExBanking.deposit(:paulo, 40.00, "R$") == {:error, :wrong_arguments}
+      assert ExBanking.deposit("Paulo", -30.00, "EU") == {:error, :wrong_arguments}
+    end
+  end
+
+  describe "withdraw/3" do
+    test "Withdraw money from user" do
+      ExBanking.create_user("Bill")
+      assert ExBanking.withdraw("Bill", 5.00, "R$") == {:error, :not_enough_money}
+      assert ExBanking.withdraw("Bill", 5.00, "€") == {:error, :not_enough_money}
+      assert ExBanking.deposit("Bill", 10.00, "R$") == {:ok, 10.00}
+      assert ExBanking.withdraw("Bill", 3.00, "R$") == {:ok, 7.00}
+      assert ExBanking.withdraw("Bill", 4.00, "R$") == {:ok, 3.00}
+      assert ExBanking.withdraw("Bill", 3.00, "R$") == {:ok, 0.00}
+      assert ExBanking.withdraw("Bill", 3.00, "R$") == {:error, :not_enough_money}
+    end
+
+    test "returns an error when the user don't exist" do
+      assert ExBanking.withdraw("Vinicius", 10.50, "R$") == {:error, :user_does_not_exist}
+    end
+
+    test "returns an error when passing wrong arguments" do
+      assert ExBanking.withdraw("Paulo", 20.00, :coin) == {:error, :wrong_arguments}
+      assert ExBanking.withdraw("Paulo", "30.00", "R$") == {:error, :wrong_arguments}
+      assert ExBanking.withdraw(:paulo, 40.00, "R$") == {:error, :wrong_arguments}
+      assert ExBanking.withdraw("Paulo", -20.50, "BRL") == {:error, :wrong_arguments}
     end
   end
 

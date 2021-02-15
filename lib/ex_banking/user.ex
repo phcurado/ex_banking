@@ -21,7 +21,7 @@ defmodule ExBanking.User do
   def deposit(user, amount, currency)
       when is_binary(user) and
              is_number(amount) and
-             is_binary(currency) do
+             is_binary(currency) and amount > 0 do
     case ExBanking.User.Producer.sync_notify(
            {:deposit, %{user: user, amount: amount, currency: currency}}
          ) do
@@ -31,6 +31,22 @@ defmodule ExBanking.User do
   end
 
   def deposit(_user, _amount, _currency), do: {:error, :wrong_arguments}
+
+  def withdraw(user, amount, currency)
+      when is_binary(user) and
+             is_number(amount) and
+             is_binary(currency) and
+             amount > 0 do
+    case ExBanking.User.Producer.sync_notify(
+           {:withdraw, %{user: user, amount: amount, currency: currency}}
+         ) do
+      {:error, :not_found} -> {:error, :user_does_not_exist}
+      {:error, :not_enough_money} -> {:error, :not_enough_money}
+      new_balance -> {:ok, new_balance}
+    end
+  end
+
+  def withdraw(_user, _amount, _currency), do: {:error, :wrong_arguments}
 
   def get_balance(user, currency)
       when is_binary(user) and is_binary(currency) do

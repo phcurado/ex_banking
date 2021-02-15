@@ -48,6 +48,19 @@ defmodule ExBanking do
   defdelegate deposit(user, amount, currency), to: ExBanking.User
 
   @doc """
+  Withdraw money to the given `amount`, `user` and `currency`.
+
+  ## Example
+      iex> ExBanking.deposit("John", 10, "R$")
+      {:ok, 10}
+      iex> ExBanking.withdraw("John", 3, "R$")
+      {:ok, 7}
+  """
+  @spec withdraw(user :: String.t(), amount :: number, currency :: String.t()) ::
+          {:ok, new_balance :: number} | banking_error
+  defdelegate withdraw(user, amount, currency), to: ExBanking.User
+
+  @doc """
   Get the balence for the given `user`.
 
   ## Example

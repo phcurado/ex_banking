@@ -30,4 +30,8 @@ defmodule ExBanking.User.Consumer do
   def handle_event(:deposit, %{user: user, amount: amount, currency: currency}) do
     Bucket.add_amount(user, amount, currency)
   end
+
+  def handle_event(:withdraw, %{user: user, amount: amount, currency: currency}) do
+    Bucket.decrease_amount(user, amount, currency)
+  end
 end
