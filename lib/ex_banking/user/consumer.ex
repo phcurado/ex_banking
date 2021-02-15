@@ -1,4 +1,8 @@
 defmodule ExBanking.User.Consumer do
+  @moduledoc """
+  User consumer logic following the `GenStage` documentation.
+  """
+
   use GenStage
 
   alias ExBanking.User.Bucket
@@ -8,12 +12,14 @@ defmodule ExBanking.User.Consumer do
     GenStage.start_link(__MODULE__, {:ok, subscription}, name: consumer_name)
   end
 
+  @doc "Name registry for User Consumer"
   def registry_name(user) do
     {:via, Registry, {Registry.User, user <> "Consumer"}}
   end
 
   ## Callbacks
 
+  @doc "Dynamically init the consumer with the given subscriber"
   def init({:ok, subscription}) do
     {:consumer, :ok, subscribe_to: [{subscription, max_demand: 10}]}
   end
@@ -25,6 +31,10 @@ defmodule ExBanking.User.Consumer do
     end
 
     {:noreply, [], state}
+  end
+
+  def handle_event(:get_balance, %{user: user, currency: currency}) do
+    Bucket.get_amount(user, currency)
   end
 
   def handle_event(:deposit, %{user: user, amount: amount, currency: currency}) do

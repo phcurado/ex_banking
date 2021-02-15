@@ -1,6 +1,6 @@
 defmodule ExBanking.User.Bucket do
   @moduledoc """
-  User bucket to store information
+  User bucket to store user information
   """
   use Agent
 
@@ -8,6 +8,8 @@ defmodule ExBanking.User.Bucket do
     Agent.start_link(fn -> %{} end, name: name)
   end
 
+  @doc "Returns the user money amount"
+  @spec get_amount(user :: String.t(), currency :: String.t()) :: number() | {:error, :not_found}
   def get_amount(user, currency) do
     try do
       get_amount!(user, currency)
@@ -27,6 +29,7 @@ defmodule ExBanking.User.Bucket do
     end
   end
 
+  @doc "Will decrease the user money amount with the given amount and currency"
   def decrease_amount(user, amount, currency) do
     try do
       decrease_amount!(user, amount, currency)
@@ -41,6 +44,7 @@ defmodule ExBanking.User.Bucket do
     update_user_balance(user, new_balance, currency)
   end
 
+  @doc "Will increase the user money amount with the given amount and currency"
   def add_amount(user, amount, currency) do
     try do
       add_amount!(user, amount, currency)
