@@ -23,6 +23,7 @@ defmodule ExBankingTest do
       assert ExBanking.deposit("Carlos", 20.00, "R$") == {:ok, 20.00}
       assert ExBanking.deposit("Carlos", 33.10, "R$") == {:ok, 53.10}
       assert ExBanking.deposit("Carlos", 10.50, "€") == {:ok, 10.50}
+      assert ExBanking.deposit("Carlos", 10.6659, "€") == {:ok, 21.16}
     end
 
     test "returns an error when the user don't exist" do
@@ -43,10 +44,13 @@ defmodule ExBankingTest do
       assert ExBanking.withdraw("Bill", 5.00, "R$") == {:error, :not_enough_money}
       assert ExBanking.withdraw("Bill", 5.00, "€") == {:error, :not_enough_money}
       assert ExBanking.deposit("Bill", 10.00, "R$") == {:ok, 10.00}
+      assert ExBanking.deposit("Bill", 55.989, "€") == {:ok, 55.98}
       assert ExBanking.withdraw("Bill", 3.00, "R$") == {:ok, 7.00}
       assert ExBanking.withdraw("Bill", 4.00, "R$") == {:ok, 3.00}
       assert ExBanking.withdraw("Bill", 3.00, "R$") == {:ok, 0.00}
       assert ExBanking.withdraw("Bill", 3.00, "R$") == {:error, :not_enough_money}
+      assert ExBanking.withdraw("Bill", 55.978, "€") == {:ok, 0.01}
+
     end
 
     test "returns an error when the user don't exist" do
@@ -84,6 +88,8 @@ defmodule ExBankingTest do
       ExBanking.create_user("Eric")
       ExBanking.deposit("Marina", 50.25, "US")
       assert ExBanking.send("Marina", "Eric", 10.00, "US") == {:ok, 40.25, 10.00}
+      assert ExBanking.send("Marina", "Eric", 20.005, "US") == {:ok, 20.25, 30.00}
+      assert ExBanking.send("Eric", "Marina", 15.0099, "US") == {:ok, 15.00, 35.25}
     end
 
     test "returns an error when the user receiver don't exist" do
@@ -101,37 +107,20 @@ defmodule ExBankingTest do
                {:error, :sender_does_not_exist}
     end
 
+    test "returns an error when the sender does not have money" do
+      ExBanking.create_user("Patricia")
+      ExBanking.create_user("Jennifer")
+      ExBanking.deposit("Patricia", 10.00, "US")
+
+      assert ExBanking.send("Patricia", "Jennifer", 20.00, "US") ==
+               {:error, :not_enough_money}
+    end
+
     test "returns an error when passing wrong arguments" do
       assert ExBanking.send("Marina", :eric, 10.00, "US") == {:error, :wrong_arguments}
       assert ExBanking.send(:marina, "Eric", 30.00, "RUS") == {:error, :wrong_arguments}
       assert ExBanking.send("Marina", "Eric", "20.00", "US") == {:error, :wrong_arguments}
       assert ExBanking.send("Marina", "Eric", 20.00, 10) == {:error, :wrong_arguments}
-    end
-  end
-
-  describe "concurrent test" do
-    test "user with 20 requests should return only 10 times" do
-      ExBanking.create_user("Andrade")
-
-      result =
-        Enum.map(1..20, fn _ ->
-          Task.async(fn ->
-            ExBanking.get_balance("Andrade", "R$")
-          end)
-        end)
-        |> Task.await_many()
-
-      ok =
-        result
-        |> Enum.count(fn res -> res == {:ok, 0} end)
-
-      assert ok == 10
-
-      too_many_requests_to_user =
-        result
-        |> Enum.count(fn res -> res == {:error, :too_many_requests_to_user} end)
-
-      assert too_many_requests_to_user == 10
     end
   end
 end

@@ -4,6 +4,7 @@ defmodule ExBanking.User do
   """
 
   alias ExBanking.User.Producer.EventParam
+  alias ExBanking.Money
 
   @spec create(user :: String.t()) :: :ok | {:error, :user_already_exists | :wrong_arguments}
   def create(user) when is_binary(user) do
@@ -28,9 +29,9 @@ defmodule ExBanking.User do
              is_binary(currency) and amount > 0 do
     with {:ok, new_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:deposit, %EventParam{user: user, amount: amount, currency: currency}}
+             {:deposit, %EventParam{user: user, amount: Money.parse_to_int(amount), currency: currency}}
            ) do
-      {:ok, new_balance}
+      {:ok, Money.load(new_balance)}
     else
       {:error, :not_found, _event} -> {:error, :user_does_not_exist}
       {:error, :too_many_requests_to_user, _event} -> {:error, :too_many_requests_to_user}
@@ -49,9 +50,9 @@ defmodule ExBanking.User do
              amount > 0 do
     with {:ok, new_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:withdraw, %EventParam{user: user, amount: amount, currency: currency}}
+             {:withdraw, %EventParam{user: user, amount: Money.parse_to_int(amount), currency: currency}}
            ) do
-      {:ok, new_balance}
+      {:ok, Money.load(new_balance)}
     else
       {:error, :not_found, _event} -> {:error, :user_does_not_exist}
       {:error, :not_enough_money, _event} -> {:error, :not_enough_money}
@@ -70,7 +71,7 @@ defmodule ExBanking.User do
            ExBanking.User.Producer.sync_notify(
              {:get_balance, %EventParam{user: user, currency: currency}}
            ) do
-      {:ok, amount}
+      {:ok, Money.load(amount)}
     else
       {:error, :not_found, _event} -> {:error, :user_does_not_exist}
       {:error, :too_many_requests_to_user, _event} -> {:error, :too_many_requests_to_user}
@@ -87,13 +88,13 @@ defmodule ExBanking.User do
              amount > 0 do
     with {:ok, from_user_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:withdraw, %EventParam{user: from_user, amount: amount, currency: currency}}
+             {:withdraw, %EventParam{user: from_user, amount: Money.parse_to_int(amount), currency: currency}}
            ),
          {:ok, to_user_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:deposit, %EventParam{user: to_user, amount: amount, currency: currency}}
+             {:deposit, %EventParam{user: to_user, amount: Money.parse_to_int(amount), currency: currency}}
            ) do
-      {:ok, from_user_balance, to_user_balance}
+      {:ok, Money.load(from_user_balance), Money.load(to_user_balance)}
     else
       {:error, :not_found, :withdraw} ->
         {:error, :sender_does_not_exist}
@@ -108,7 +109,7 @@ defmodule ExBanking.User do
         # rollback the transaction with top priority
         ExBanking.User.Producer.sync_notify(
           {:deposit,
-           %EventParam{user: from_user, amount: amount, currency: currency, priority: :top}}
+           %EventParam{user: from_user, amount: Money.parse_to_int(amount), currency: currency, priority: :top}}
         )
 
         {:error, :too_many_requests_to_receiver}
