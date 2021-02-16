@@ -86,7 +86,5 @@ defmodule ExBanking do
           amount :: number,
           currency :: String.t()
         ) :: {:ok, from_user_balance :: number, to_user_balance :: number} | banking_error
-  def send(_from_user, _to_user, _amount, _currency) do
-    {:ok, 0, 0}
-  end
+  defdelegate send(from_user, to_user, amount, currency), to: ExBanking.User
 end

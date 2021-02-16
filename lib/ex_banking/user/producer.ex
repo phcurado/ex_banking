@@ -22,10 +22,10 @@ defmodule ExBanking.User.Producer do
   @doc "Sends an event and returns only after the event is dispatched."
   @spec sync_notify(event | event_balance, :infinity | non_neg_integer) ::
           event | {:error, :not_found} | {:error, :not_enough_money}
-  def sync_notify({_, %{user: user}} = event, timeout \\ 5000) do
+  def sync_notify({event_type, %{user: user}} = event, timeout \\ 5000) do
     case registry_exists?(user) do
-      true -> GenStage.call(registry_name(user), {:notify, event}, timeout)
-      false -> {:error, :not_found}
+      true -> GenStage.call(registry_name(user), event, timeout)
+      false -> {:error, :not_found, event_type}
     end
   end
 
@@ -37,7 +37,7 @@ defmodule ExBanking.User.Producer do
   @doc "Checks if the user producer exists"
   @spec registry_exists?(user :: String.t()) :: boolean
   def registry_exists?(user) do
-    case Registry.lookup(Registry.User, user <> "Producer") do
+    case Registry.lookup(Registry.User, user) do
       [] -> false
       _ -> true
     end
@@ -49,12 +49,12 @@ defmodule ExBanking.User.Producer do
     {:producer, {:queue.new(), 0}, dispatcher: GenStage.BroadcastDispatcher}
   end
 
-  def handle_call({:notify, event}, from, {queue, pending_demand}) when pending_demand > 0 do
+  def handle_call(event, from, {queue, pending_demand}) when pending_demand > 0 do
     queue = :queue.in({from, event}, queue)
     dispatch_events(queue, pending_demand, [])
   end
 
-  def handle_call({:notify, _event}, _from, {queue, pending_demand}) do
+  def handle_call(_event, _from, {queue, pending_demand}) do
     {:reply, {:error, :too_many_requests_to_user}, [], {queue, pending_demand}}
   end
 

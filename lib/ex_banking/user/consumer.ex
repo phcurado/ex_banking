@@ -35,13 +35,23 @@ defmodule ExBanking.User.Consumer do
 
   def handle_event(:get_balance, %{user: user, currency: currency}) do
     Bucket.get_amount(user, currency)
+    |> event_response(:get_balance)
   end
 
   def handle_event(:deposit, %{user: user, amount: amount, currency: currency}) do
     Bucket.add_amount(user, amount, currency)
+    |> event_response(:deposit)
   end
 
   def handle_event(:withdraw, %{user: user, amount: amount, currency: currency}) do
     Bucket.decrease_amount(user, amount, currency)
+    |> event_response(:withdraw)
+  end
+
+  defp event_response(response, event) do
+    case response do
+      {:error, error} -> {:error, error, event}
+      resp -> {:ok, resp}
+    end
   end
 end
