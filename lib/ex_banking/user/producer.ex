@@ -23,11 +23,17 @@ defmodule ExBanking.User.Producer do
   @doc "Sends an event and returns only after the event is dispatched."
   @spec sync_notify(event | event_balance, :infinity | non_neg_integer) ::
           {:ok, any} | {:error, atom(), atom()}
-  def sync_notify({event_type, %{user: user}} = event, timeout \\ 5000) do
+  def sync_notify(event, timeout \\ 5000)
+
+  def sync_notify({event_type, %{user: user}} = event, timeout) do
     case registry_exists?(user) do
       true -> GenStage.call(registry_name(user), event, timeout)
       false -> {:error, :not_found, event_type}
     end
+  end
+
+  def sync_notify(_event, _timeout) do
+    {:error, :wrong_arguments}
   end
 
   @doc "Name registry for User Producer"

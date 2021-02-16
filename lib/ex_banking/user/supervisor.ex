@@ -1,5 +1,7 @@
 defmodule ExBanking.User.Supervisor do
-  @moduledoc false
+  @moduledoc """
+  User supervisor responsible for starting the user store bucket, producer and consumer.
+  """
 
   use Supervisor
 
