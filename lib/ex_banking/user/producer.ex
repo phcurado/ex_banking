@@ -11,8 +11,9 @@ defmodule ExBanking.User.Producer do
   use GenStage
 
   @type event_balance :: {:get_balance, %{user: String.t(), currency: String.t()}}
+  @type actions :: :deposit | :withdraw
   @type event ::
-          {:deposit | :withdraw, %{user: String.t(), amount: number(), currency: String.t()}}
+          {actions, %{user: String.t(), amount: number(), currency: String.t()}}
 
   @doc "Starts the user producer."
   def start_link(name) do
@@ -21,7 +22,7 @@ defmodule ExBanking.User.Producer do
 
   @doc "Sends an event and returns only after the event is dispatched."
   @spec sync_notify(event | event_balance, :infinity | non_neg_integer) ::
-          event | {:error, :not_found} | {:error, :not_enough_money}
+          {:ok, any} | {:error, atom(), atom()}
   def sync_notify({event_type, %{user: user}} = event, timeout \\ 5000) do
     case registry_exists?(user) do
       true -> GenStage.call(registry_name(user), event, timeout)
@@ -45,25 +46,42 @@ defmodule ExBanking.User.Producer do
 
   ## Callbacks
 
+  @doc """
+  Init the GenStage producer
+  """
   def init(:ok) do
     {:producer, {:queue.new(), 0}, dispatcher: GenStage.BroadcastDispatcher}
   end
 
+  @doc """
+  Handler for the GenStage call function.
+
+  If the `pending_demand` is less than zero this handler will reply
+  with an error based on the consumer `max_demand`. But if this event has a priority, like a rollback in a transaction,
+  the handler will dispatch immediately.
+  """
   def handle_call(event, from, {queue, pending_demand}) when pending_demand > 0 do
     queue = :queue.in({from, event}, queue)
     dispatch_events(queue, pending_demand, [])
   end
 
-  def handle_call(_event, _from, {queue, pending_demand}) do
-    {:reply, {:error, :too_many_requests_to_user}, [], {queue, pending_demand}}
+  def handle_call({_event_type, %{priority: :now}} = event, _from, state) do
+    # Dispatch immediately
+    {:reply, :ok, [event], state}
   end
 
+  def handle_call({event_type, _}, _from, {queue, pending_demand}) do
+    {:reply, {:error, :too_many_requests_to_user, event_type}, [], {queue, pending_demand}}
+  end
+
+  @doc """
+  Handler for the GenStage demands.
+
+  It will receive the GenStage demands and dispatch to the event handler. This will increase the
+  demands by adding the incoming demand to the pending demand
+  """
   def handle_demand(incoming_demand, {queue, pending_demand}) do
     dispatch_events(queue, incoming_demand + pending_demand, [])
-  end
-
-  def handle_info({:reply, _from}, {queue, demand}) do
-    dispatch_events(queue, demand, [])
   end
 
   defp dispatch_events(queue, 0, events) do

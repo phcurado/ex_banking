@@ -31,6 +31,7 @@ defmodule ExBanking.User do
       {:ok, new_balance}
     else
       {:error, :not_found, _event} -> {:error, :user_does_not_exist}
+      {:error, :too_many_requests_to_user, _event} -> {:error, :too_many_requests_to_user}
     end
   end
 
@@ -52,6 +53,7 @@ defmodule ExBanking.User do
     else
       {:error, :not_found, _event} -> {:error, :user_does_not_exist}
       {:error, :not_enough_money, _event} -> {:error, :not_enough_money}
+      {:error, :too_many_requests_to_user, _event} -> {:error, :too_many_requests_to_user}
     end
   end
 
@@ -67,6 +69,7 @@ defmodule ExBanking.User do
       {:ok, amount}
     else
       {:error, :not_found, _event} -> {:error, :user_does_not_exist}
+      {:error, :too_many_requests_to_user, _event} -> {:error, :too_many_requests_to_user}
     end
   end
 
@@ -88,9 +91,21 @@ defmodule ExBanking.User do
            ) do
       {:ok, from_user_balance, to_user_balance}
     else
-      {:error, :not_found, :withdraw} -> {:error, :sender_does_not_exist}
-      {:error, :not_found, :deposit} -> {:error, :receiver_does_not_exist}
-      {:error, :not_enough_money, _event} -> {:error, :not_enough_money}
+      {:error, :not_found, :withdraw} ->
+        {:error, :sender_does_not_exist}
+
+      {:error, :not_found, :deposit} ->
+        {:error, :receiver_does_not_exist}
+
+      {:error, :too_many_requests_to_user, :withdraw} ->
+        {:error, :too_many_requests_to_sender}
+
+      {:error, :too_many_requests_to_user, :deposit} ->
+        # TODO: roolback the previous withdraw
+        {:error, :too_many_requests_to_receiver}
+
+      {:error, :not_enough_money, _event} ->
+        {:error, :not_enough_money}
     end
   end
 
