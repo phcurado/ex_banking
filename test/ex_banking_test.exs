@@ -108,4 +108,30 @@ defmodule ExBankingTest do
       assert ExBanking.send("Marina", "Eric", 20.00, 10) == {:error, :wrong_arguments}
     end
   end
+
+  describe "concurrent test" do
+    test "user with 20 requests should return only 10 times" do
+      ExBanking.create_user("Andrade")
+
+      result =
+        Enum.map(1..20, fn _ ->
+          Task.async(fn ->
+            ExBanking.get_balance("Andrade", "R$")
+          end)
+        end)
+        |> Task.await_many()
+
+      ok =
+        result
+        |> Enum.count(fn res -> res == {:ok, 0} end)
+
+      assert ok == 10
+
+      too_many_requests_to_user =
+        result
+        |> Enum.count(fn res -> res == {:error, :too_many_requests_to_user} end)
+
+      assert too_many_requests_to_user == 10
+    end
+  end
 end

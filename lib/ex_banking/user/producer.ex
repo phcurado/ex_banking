@@ -10,10 +10,17 @@ defmodule ExBanking.User.Producer do
 
   use GenStage
 
-  @type event_balance :: {:get_balance, %{user: String.t(), currency: String.t()}}
-  @type actions :: :deposit | :withdraw
-  @type event ::
-          {actions, %{user: String.t(), amount: number(), currency: String.t()}}
+  defmodule EventParam do
+    @type t :: %__MODULE__{
+            user: String.t(),
+            amount: number() | nil,
+            currency: String.t(),
+            priority: :top | :default
+          }
+    defstruct [:user, :amount, :currency, priority: :default]
+  end
+
+  @type event :: {:deposit | :withdraw | :get_balance, EventParam.t()}
 
   @doc "Starts the user producer."
   def start_link(name) do
@@ -21,11 +28,10 @@ defmodule ExBanking.User.Producer do
   end
 
   @doc "Sends an event and returns only after the event is dispatched."
-  @spec sync_notify(event | event_balance, :infinity | non_neg_integer) ::
-          {:ok, any} | {:error, atom(), atom()}
+  @spec sync_notify(event, :infinity | non_neg_integer) :: {:ok, any} | {:error, atom(), atom()}
   def sync_notify(event, timeout \\ 5000)
 
-  def sync_notify({event_type, %{user: user}} = event, timeout) do
+  def sync_notify({event_type, %EventParam{user: user}} = event, timeout) do
     case registry_exists?(user) do
       true -> GenStage.call(registry_name(user), event, timeout)
       false -> {:error, :not_found, event_type}
@@ -44,7 +50,7 @@ defmodule ExBanking.User.Producer do
   @doc "Checks if the user producer exists"
   @spec registry_exists?(user :: String.t()) :: boolean
   def registry_exists?(user) do
-    case Registry.lookup(Registry.User, user) do
+    case Registry.lookup(Registry.User, user <> "Producer") do
       [] -> false
       _ -> true
     end
@@ -71,7 +77,7 @@ defmodule ExBanking.User.Producer do
     dispatch_events(queue, pending_demand, [])
   end
 
-  def handle_call({_event_type, %{priority: :now}} = event, _from, state) do
+  def handle_call({_event_type, %{priority: :top}} = event, _from, state) do
     # Dispatch immediately
     {:reply, :ok, [event], state}
   end
