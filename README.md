@@ -44,7 +44,7 @@ Following Elixir patterns, this project was divided into a main module with the 
 
 For the OTP architecture, see the diagram below.
 
-![Architecture diagram](docs/applicationdiagram.png?raw=true "Architecture diagram")
+![Architecture diagram](images/applicationdiagram.png?raw=true "Architecture diagram")
 
 ### ExBanking
 
