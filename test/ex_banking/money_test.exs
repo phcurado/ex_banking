@@ -31,5 +31,4 @@ defmodule ExBanking.MoneyTest do
       assert Money.parse_to_int(:test) == {:error, :not_number}
     end
   end
-
 end

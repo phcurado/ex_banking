@@ -50,7 +50,6 @@ defmodule ExBankingTest do
       assert ExBanking.withdraw("Bill", 3.00, "R$") == {:ok, 0.00}
       assert ExBanking.withdraw("Bill", 3.00, "R$") == {:error, :not_enough_money}
       assert ExBanking.withdraw("Bill", 55.978, "€") == {:ok, 0.01}
-
     end
 
     test "returns an error when the user don't exist" do

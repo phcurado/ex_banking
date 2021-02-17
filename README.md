@@ -21,6 +21,10 @@ Simple Banking OTP application in Elixir language.
 
 Following Elixir patterns, this project was divided into a main module with the project name (`ExBanking`) and internal modules to implement the domain logic.
 
+For the OTP architecture, see the diagram below.
+
+![Architecture diagram](docs/applicationdiagram.png?raw=true "Architecture diagram")
+
 ### ExBanking
 
 This is the presentation module where are the public functions described in this challenge. Here the functions are delegated to a internal module which contains the domain implementations.
@@ -36,7 +40,7 @@ This is where lives the implementation of the `ExBanking` functions. It contains
 
 ### ExBanking.User.Bucket
 
-Where is stored each user information (map of money amount and currency). Implemented with [Agent](https://hexdocs.pm/elixir/Agent.html) in which the main use case is for state managment.
+Where is stored each user information (map of money amount and currency). Implemented with [Agent](https://hexdocs.pm/elixir/Agent.html) which the main use case is for state managment.
 
 ### ExBanking.User.Producer and ExBanking.User.Consumer
 

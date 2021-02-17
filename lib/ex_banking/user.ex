@@ -29,7 +29,8 @@ defmodule ExBanking.User do
              is_binary(currency) and amount > 0 do
     with {:ok, new_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:deposit, %EventParam{user: user, amount: Money.parse_to_int(amount), currency: currency}}
+             {:deposit,
+              %EventParam{user: user, amount: Money.parse_to_int(amount), currency: currency}}
            ) do
       {:ok, Money.load(new_balance)}
     else
@@ -50,7 +51,8 @@ defmodule ExBanking.User do
              amount > 0 do
     with {:ok, new_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:withdraw, %EventParam{user: user, amount: Money.parse_to_int(amount), currency: currency}}
+             {:withdraw,
+              %EventParam{user: user, amount: Money.parse_to_int(amount), currency: currency}}
            ) do
       {:ok, Money.load(new_balance)}
     else
@@ -88,11 +90,13 @@ defmodule ExBanking.User do
              amount > 0 do
     with {:ok, from_user_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:withdraw, %EventParam{user: from_user, amount: Money.parse_to_int(amount), currency: currency}}
+             {:withdraw,
+              %EventParam{user: from_user, amount: Money.parse_to_int(amount), currency: currency}}
            ),
          {:ok, to_user_balance} <-
            ExBanking.User.Producer.sync_notify(
-             {:deposit, %EventParam{user: to_user, amount: Money.parse_to_int(amount), currency: currency}}
+             {:deposit,
+              %EventParam{user: to_user, amount: Money.parse_to_int(amount), currency: currency}}
            ) do
       {:ok, Money.load(from_user_balance), Money.load(to_user_balance)}
     else
@@ -109,7 +113,12 @@ defmodule ExBanking.User do
         # rollback the transaction with top priority
         ExBanking.User.Producer.sync_notify(
           {:deposit,
-           %EventParam{user: from_user, amount: Money.parse_to_int(amount), currency: currency, priority: :top}}
+           %EventParam{
+             user: from_user,
+             amount: Money.parse_to_int(amount),
+             currency: currency,
+             priority: :top
+           }}
         )
 
         {:error, :too_many_requests_to_receiver}
