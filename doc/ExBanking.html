@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="ExBanking v0.1.0">
+
+    <title>ExBanking — ExBanking v0.1.0</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+
+    <script src="dist/sidebar_items-99ff7ede07.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="api-reference.html" class="sidebar-projectName">
+ExBanking
+      </a>
+      <strong class="sidebar-projectVersion">
+        v0.1.0
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+ExBanking <small class="app-vsn">(ExBanking v0.1.0)</small>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Documentation for <a href="#content"><code class="inline">ExBanking</code></a> project.</p><p>There are the public functions where can be invoked with <code class="inline">iex</code>.</p><h2 id="module-example" class="section-heading">
+  <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<p>For example you can run the command below</p><pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">create_user</span><span class="p" data-group-id="1530745090-1">(</span><span class="s">&quot;Paulo&quot;</span><span class="p" data-group-id="1530745090-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre><p>For more information you can check the above functions which has some examples.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:banking_error/0">banking_error()</a>
+
+  </div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_user/1">create_user(user)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a new user to the given <code class="inline">name</code>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#deposit/3">deposit(user, amount, currency)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Deposit money amount to the given <code class="inline">user</code> with the given <code class="inline">currency</code>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_balance/2">get_balance(user, currency)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Get the balence for the given <code class="inline">user</code>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#send/4">send(from_user, to_user, amount, currency)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Transfer money between users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#withdraw/3">withdraw(user, amount, currency)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Withdraw money to the given <code class="inline">amount</code>, <code class="inline">user</code> and <code class="inline">currency</code>.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:banking_error/0">
+
+  <div class="detail-header">
+    <a href="#t:banking_error/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">banking_error()</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>banking_error() ::
+  {:error,
+   :wrong_arguments
+   | :user_already_exists
+   | :user_does_not_exist
+   | :not_enough_money
+   | :sender_does_not_exist
+   | :receiver_does_not_exist
+   | :too_many_requests_to_user
+   | :too_many_requests_to_sender
+   | :too_many_requests_to_receiver}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="create_user/1">
+
+  <div class="detail-header">
+    <a href="#create_user/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_user(user)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create_user(user :: String.t()) :: :ok | <a href="#t:banking_error/0">banking_error</a>()</pre>
+
+      </div>
+
+<p>Create a new user to the given <code class="inline">name</code>.</p><h2 id="create_user/1-example" class="section-heading">
+  <a href="#create_user/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">create_user</span><span class="p" data-group-id="5031353278-1">(</span><span class="s">&quot;John&quot;</span><span class="p" data-group-id="5031353278-1">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="deposit/3">
+
+  <div class="detail-header">
+    <a href="#deposit/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">deposit(user, amount, currency)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>deposit(user :: String.t(), amount :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>(), currency :: String.t()) ::
+  {:ok, new_balance :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()} | <a href="#t:banking_error/0">banking_error</a>()</pre>
+
+      </div>
+
+<p>Deposit money amount to the given <code class="inline">user</code> with the given <code class="inline">currency</code>.</p><h2 id="deposit/3-example" class="section-heading">
+  <a href="#deposit/3-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">deposit</span><span class="p" data-group-id="7390122881-1">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="7390122881-1">)</span><span class="w">
+</span><span class="p" data-group-id="7390122881-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="7390122881-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">deposit</span><span class="p" data-group-id="7390122881-3">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="7390122881-3">)</span><span class="w">
+</span><span class="p" data-group-id="7390122881-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p" data-group-id="7390122881-4">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get_balance/2">
+
+  <div class="detail-header">
+    <a href="#get_balance/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_balance(user, currency)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>get_balance(user :: String.t(), currency :: String.t()) ::
+  {:ok, balance :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()} | <a href="#t:banking_error/0">banking_error</a>()</pre>
+
+      </div>
+
+<p>Get the balence for the given <code class="inline">user</code>.</p><h2 id="get_balance/2-example" class="section-heading">
+  <a href="#get_balance/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">get_balance</span><span class="p" data-group-id="2585075505-1">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="2585075505-1">)</span><span class="w">
+</span><span class="p" data-group-id="2585075505-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p" data-group-id="2585075505-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">get_balance</span><span class="p" data-group-id="2585075505-3">(</span><span class="s">&quot;nonexistent user&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="2585075505-3">)</span><span class="w">
+</span><span class="p" data-group-id="2585075505-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:user_does_not_exist</span><span class="p" data-group-id="2585075505-4">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="send/4">
+
+  <div class="detail-header">
+    <a href="#send/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">send(from_user, to_user, amount, currency)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>send(
+  from_user :: String.t(),
+  to_user :: String.t(),
+  amount :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>(),
+  currency :: String.t()
+) ::
+  {:ok, from_user_balance :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>(), to_user_balance :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()}
+  | <a href="#t:banking_error/0">banking_error</a>()</pre>
+
+      </div>
+
+<p>Transfer money between users.</p><h2 id="send/4-example" class="section-heading">
+  <a href="#send/4-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">send</span><span class="p" data-group-id="8166930165-1">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Paulo&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="8166930165-1">)</span><span class="w">
+</span><span class="p" data-group-id="8166930165-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p" data-group-id="8166930165-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="withdraw/3">
+
+  <div class="detail-header">
+    <a href="#withdraw/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">withdraw(user, amount, currency)</h1>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>withdraw(user :: String.t(), amount :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>(), currency :: String.t()) ::
+  {:ok, new_balance :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()} | <a href="#t:banking_error/0">banking_error</a>()</pre>
+
+      </div>
+
+<p>Withdraw money to the given <code class="inline">amount</code>, <code class="inline">user</code> and <code class="inline">currency</code>.</p><h2 id="withdraw/3-example" class="section-heading">
+  <a href="#withdraw/3-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">deposit</span><span class="p" data-group-id="8407014654-1">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="8407014654-1">)</span><span class="w">
+</span><span class="p" data-group-id="8407014654-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="8407014654-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">ExBanking</span><span class="o">.</span><span class="n">withdraw</span><span class="p" data-group-id="8407014654-3">(</span><span class="s">&quot;John&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;R$&quot;</span><span class="p" data-group-id="8407014654-3">)</span><span class="w">
+</span><span class="p" data-group-id="8407014654-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p" data-group-id="8407014654-4">}</span></code></pre>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+  </body>
+</html>

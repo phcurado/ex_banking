@@ -17,6 +17,27 @@ Simple Banking OTP application in Elixir language.
     {:ok, 20.0}
     ```
 
+## Tests
+
+- Run tests with `mix test`.
+- For coverage report, just run `mix test --cover`
+
+```shell
+Percentage | Module
+-----------|--------------------------
+    87.50% | ExBanking.User
+   100.00% | ExBanking
+   100.00% | ExBanking.Application
+   100.00% | ExBanking.Money
+   100.00% | ExBanking.User.Bucket
+   100.00% | ExBanking.User.Consumer
+   100.00% | ExBanking.User.Producer
+   100.00% | ExBanking.User.Producer.EventParam
+   100.00% | ExBanking.User.Supervisor
+-----------|--------------------------
+    98.59% | Total
+```
+
 ## Architecture
 
 Following Elixir patterns, this project was divided into a main module with the project name (`ExBanking`) and internal modules to implement the domain logic.
@@ -58,6 +79,8 @@ To generate the api documentation, follow the [ex_docs](https://github.com/elixi
 ```shell
 ex_doc "ExBanking" "0.1.0" "_build/dev/lib/ex_banking/ebin"   
 ```
+
+The docs generated was committed to this repository to help the visualization of this project api, It is inside the `doc` folder.
 
 ## Final thoughts
 
