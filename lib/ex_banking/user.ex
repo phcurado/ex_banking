@@ -104,6 +104,16 @@ defmodule ExBanking.User do
         {:error, :sender_does_not_exist}
 
       {:error, :not_found, :deposit} ->
+        # rollback the transaction with top priority
+        ExBanking.User.Producer.sync_notify(
+          {:deposit,
+           %EventParam{
+             user: from_user,
+             amount: Money.parse_to_int(amount),
+             currency: currency,
+             priority: :top
+           }}
+        )
         {:error, :receiver_does_not_exist}
 
       {:error, :too_many_requests_to_user, :withdraw} ->
